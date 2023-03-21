@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "981302153100",
+    "project_id": "laporin-a3850",
+    "storage_bucket": "laporin-a3850.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981302153100:android:c521e4a226da4a9914d0a9",
+        "android_client_info": {
+          "package_name": "com.example.laporin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "981302153100-sdn00aetssqd2cijbr3ad1h9ia6uplh6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.laporin",
+            "certificate_hash": "46cbb9cc6f11a92319f7a44ef881f4334b66f9bb"
+          }
+        },
+        {
+          "client_id": "981302153100-aea4b4pq8r8d535v0jgucempqidjl89h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhett-c6OHFowffzUAl8iO12EMNW5QK4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "981302153100-aea4b4pq8r8d535v0jgucempqidjl89h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
