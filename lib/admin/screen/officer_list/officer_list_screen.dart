@@ -1,12 +1,14 @@
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:laporin/admin/screen/complaint_list/complaint_respond.dart';
 import 'package:laporin/admin/screen/menu/menu_widget.dart';
+import 'package:laporin/admin/screen/officer_list/officer_edit_screen.dart';
+import 'package:laporin/admin/service/officer.dart' as Officer;
 import 'package:laporin/history/history_detail_screen.dart';
 import 'package:laporin/shared/style.dart';
 import 'package:laporin/widget/boxshadow.dart';
@@ -147,7 +149,9 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
               ),
               SizedBox(height: 10.h),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, '/officer-add');
+                },
                 child: Container(
                   width: 306.w,
                   height: 50.h,
@@ -216,7 +220,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
                     return ListView(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      children: snapshot.data!.docs.map((user) {
+                      children: snapshot.data!.docs.map((officer) {
                         return Column(
                           children: [
                             Container(
@@ -250,23 +254,29 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            user['fullname'],
+                                            officer['fullname'],
                                             style: officerName,
                                           ),
                                           Text(
-                                            user['role'],
+                                            officer['role'],
                                             style: officerRole,
                                           ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.remove_red_eye_rounded,
-                                        color: mainColor,
-                                      )),
+                                  Row(
+                                    children: [
+                                      IconButton(onPressed: (){
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => OfficerEditScreen(
+                                          officer: officer,
+                                        )));
+                                      }, icon: Icon(Icons.edit_rounded), color: mainColor,),
+                                      IconButton(onPressed: (){
+                                        buildWarningDeleteDialog(context, officer['id']).show();
+                                      }, icon: Icon(Icons.delete_rounded), color: red,),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),
@@ -286,4 +296,32 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
       ),
     );
   }
+}
+
+AwesomeDialog buildWarningDeleteDialog(BuildContext context, String id) {
+  return AwesomeDialog(
+    context: context,
+    dialogType: DialogType.warning,
+    headerAnimationLoop: false,
+    animType: AnimType.bottomSlide,
+    title: 'Perhatian!',
+    titleTextStyle: popUpWarningTitle,
+    desc: 'Apakah anda yakin ingin menghapus petugas?',
+    descTextStyle: popUpWarningDesc,
+    buttonsTextStyle: whiteOnBtnSmall,
+    buttonsBorderRadius: BorderRadius.circular(6.r),
+    btnOkColor: red,
+    btnCancelColor: mainColor,
+    showCloseIcon: false,
+    btnOkText: 'Ya',
+    btnCancelText: 'Tidak',
+    btnOkOnPress: () {
+      try{
+        Officer.officerDelete(id);
+      }catch(e){
+        print(e);
+      }
+    },
+    btnCancelOnPress: (){},
+  );
 }

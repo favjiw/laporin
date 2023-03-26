@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 
-Future respondAdd(String desc, String complaintId, String userId) async {
+Future respondAdd(String desc, String complaintId, int status, String userId) async {
   try{
     Timestamp now = Timestamp.now();
     DateTime dateTime = now.toDate();
@@ -17,6 +17,10 @@ Future respondAdd(String desc, String complaintId, String userId) async {
       'desc': desc,
       'complaintId': complaintId,
       'operatorId': userId
+    });
+    final refComplaint = FirebaseFirestore.instance.collection('complaints').doc(complaintId);
+    refComplaint.update({
+      'status': status,
     });
   } on FirebaseException catch (e){
     print(e);

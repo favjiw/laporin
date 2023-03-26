@@ -9,3 +9,10 @@ BoxShadow mainBoxShadow = BoxShadow(
   blurRadius: 12,
   spreadRadius: 0,
 );
+
+BoxShadow secondaryBoxShadow = BoxShadow(
+  color: black.withOpacity(0.05),
+  offset: Offset(0, 4),
+  blurRadius: 12,
+  spreadRadius: 0,
+);

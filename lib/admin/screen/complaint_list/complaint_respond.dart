@@ -21,7 +21,7 @@ class _ComplaintRespondState extends State<ComplaintRespond> {
   dynamic complaint;
   String? uid;
   TextEditingController _respond = TextEditingController();
-  int _selectedValue = 0;
+  int? _selectedValue;
 
   void _handleRadioValueChanged(int? value) {
     setState(() {
@@ -29,7 +29,13 @@ class _ComplaintRespondState extends State<ComplaintRespond> {
     });
   }
 
-  _getSharedPrefs() async {
+  void _setStatus() async {
+    setState(() {
+      _selectedValue = complaint['status'];
+    });
+  }
+
+  void _getSharedPrefs() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     setState(() {
       uid = _prefs.getString('uid');
@@ -40,6 +46,7 @@ class _ComplaintRespondState extends State<ComplaintRespond> {
   void initState() {
     complaint = widget.complaint;
     _getSharedPrefs();
+    _setStatus();
     super.initState();
   }
 
@@ -74,7 +81,7 @@ class _ComplaintRespondState extends State<ComplaintRespond> {
                   _isLoading = true;
                 });
                 _showLoadingIndicator(context);
-                respondAdd(_respond.text, complaint['id'], uid!).then((value){
+                respondAdd(_respond.text, complaint['id'], _selectedValue!, uid!).then((value){
                   setState(() {
                     _isLoading = false;
                   });

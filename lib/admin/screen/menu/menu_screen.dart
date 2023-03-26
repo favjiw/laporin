@@ -21,6 +21,7 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   bool? isLoading;
   String fullname = 'Siapa saya';
+  String? username;
   String? role;
   String uid = '';
 
@@ -57,6 +58,7 @@ class _MenuScreenState extends State<MenuScreen> {
       // print('Ini adalah checkUsers: ${users['fullname']}');
       setState(() {
         fullname = users.fullname!;
+        username = users.username!;
         role = users.role;
       });
     } catch (e) {
@@ -112,7 +114,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             )
                           else
                             Text(
-                              fullname,
+                              username!,
                               style: usernameTitle,
                             ),
                           isLoading!

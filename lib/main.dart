@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:laporin/admin/screen/officer_list/officer_add_screen.dart';
 import 'package:laporin/admin/screen/panel/panel_screen.dart';
 import 'package:laporin/complaint/complaint_edit_screen.dart';
 import 'package:laporin/complaint/complaint_screen.dart';
@@ -50,6 +51,7 @@ class _LaporinAppState extends State<LaporinApp> {
             '/complaint': (context) => ComplaintScreen(),
             '/history': (context) => HistoryScreen(),
             '/menu-panel': (context) => PanelScreen(),
+            '/officer-add': (context) => OfficerAddScreen(),
           },
         );
       },
