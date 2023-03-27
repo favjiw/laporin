@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -86,6 +87,7 @@ class _ComplaintRespondState extends State<ComplaintRespond> {
                     _isLoading = false;
                   });
                   Navigator.of(context).pop();
+                  buildSuccessSubmitDialog(context).show();
                 }).catchError((error){
                   setState(() {
                     _isLoading = false;
@@ -199,6 +201,28 @@ void _showLoadingIndicator(BuildContext context) {
           ),
         ),
       );
+    },
+  );
+}
+
+AwesomeDialog buildSuccessSubmitDialog(BuildContext context) {
+  return AwesomeDialog(
+    context: context,
+    dialogType: DialogType.success,
+    headerAnimationLoop: false,
+    animType: AnimType.bottomSlide,
+    title: 'Berhasil mengirim tanggapan!',
+    titleTextStyle: popUpWarningTitle,
+    desc: 'Kamu sudah berhasil mengirim tanggapan terhadap pengaduan ini.',
+    descTextStyle: popUpWarningDesc,
+    buttonsTextStyle: whiteOnBtnSmall,
+    buttonsBorderRadius: BorderRadius.circular(6.r),
+    btnOkColor: mainColor,
+    showCloseIcon: false,
+    btnOkText: 'Ok',
+    btnOkOnPress: () {
+      // Navigator.pushNamedAndRemoveUntil(context, '/botnavbar', (route) => false);
+      Navigator.pop(context);
     },
   );
 }
