@@ -20,7 +20,6 @@ import 'package:excel/excel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
 class OfficerListScreen extends StatefulWidget {
   const OfficerListScreen({Key? key}) : super(key: key);
 
@@ -29,10 +28,11 @@ class OfficerListScreen extends StatefulWidget {
 }
 
 class _OfficerListScreenState extends State<OfficerListScreen> {
-  bool _isLoading = true;
+  bool? _isLoading;
   int _totalOfficers = 0;
   final db = FirebaseFirestore.instance;
   String? _uid;
+  String? _role;
 
   Future<String?> getSharedPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -45,9 +45,6 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
     });
     try {
       await getSharedPrefs().then((value) async {
-        print("Start");
-        print(value);
-        print(value.runtimeType);
         setState(() {
           _uid = '$value';
         });
@@ -57,10 +54,11 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
     }
     try {
       var checkUsers =
-      await FirebaseFirestore.instance.collection('users').doc(_uid).get();
+          await FirebaseFirestore.instance.collection('users').doc(_uid).get();
       final users = Users.fromJson(checkUsers.data()!, purify: true);
       setState(() {
         _uid = users.id;
+        _role = users.role;
       });
     } catch (e) {
       print('Error di blok firestore: $e');
@@ -71,6 +69,9 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
   }
 
   Future countDocumentsInCollection() async {
+    setState(() {
+      _isLoading = true;
+    });
     QuerySnapshot querySnapshot =
         await db.collection('users').where('role', isEqualTo: 'officer').get();
     int count = querySnapshot.size;
@@ -87,23 +88,44 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
     Directory? directory = await getExternalStorageDirectory();
     String fileName = "officerData1.xlsx";
     String filePath = "${directory!.path}/$fileName";
-    try{
-      QuerySnapshot querySnapshot = await db.collection('users').where('role', isEqualTo: 'officer').get();
+    try {
+      QuerySnapshot querySnapshot = await db
+          .collection('users')
+          .where('role', isEqualTo: 'officer')
+          .get();
       var workbook = Excel.createExcel();
       var sheet = workbook['Sheet1'];
       // Add headers to worksheet
-      sheet.appendRow(['ID', 'Fullname', 'Username', 'NIK', 'Role', 'Phone', 'Email', 'Password']);
+      sheet.appendRow([
+        'ID',
+        'Fullname',
+        'Username',
+        'NIK',
+        'Role',
+        'Phone',
+        'Email',
+        'Password'
+      ]);
       // Add data to worksheet
       for (var document in querySnapshot.docs) {
-        dynamic documentData = document .data();
-        var row = [documentData!['id'] as String, documentData!['fullname'] as String, documentData!['username'] as String, documentData!['nik'] as int, documentData!['role'] as String, documentData!['phone'] as String, documentData!['email'] as String, documentData!['password'] as String,];
+        dynamic documentData = document.data();
+        var row = [
+          documentData!['id'] as String,
+          documentData!['fullname'] as String,
+          documentData!['username'] as String,
+          documentData!['nik'] as int,
+          documentData!['role'] as String,
+          documentData!['phone'] as String,
+          documentData!['email'] as String,
+          documentData!['password'] as String,
+        ];
         sheet.appendRow(row);
       }
       List<int>? bytes = await workbook.encode();
       await File(filePath).writeAsBytes(bytes!);
       print(filePath);
       print("BERHASIL!!!");
-    }catch (e){
+    } catch (e) {
       print(e);
     }
   }
@@ -144,7 +166,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _isLoading
+                  _isLoading!
                       ? Shimmer.fromColors(
                           baseColor: Colors.grey[300]!,
                           highlightColor: Colors.grey[100]!,
@@ -161,30 +183,33 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
                           "$_totalOfficers Officers",
                           style: officerCount,
                         ),
-                  TextButton(
-                      onPressed: () {
-                        exportOfficerToExcel();
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.file_open_rounded,
-                            color: Colors.blue,
-                          ),
-                          SizedBox(
-                            width: 5.w,
-                          ),
-                          Text(
-                            "Export",
-                            style: forgotPassword,
-                          ),
-                        ],
-                      )),
+                  _isLoading!
+                      ? SizedBox()
+                      : _role! != "admin"
+                          ? SizedBox()
+                          : TextButton(
+                              onPressed: () {
+                                exportOfficerToExcel();
+                              },
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.transparent,
+                                  elevation: 0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.file_open_rounded,
+                                    color: Colors.blue,
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Text(
+                                    "Export",
+                                    style: forgotPassword,
+                                  ),
+                                ],
+                              )),
                 ],
               ),
               SizedBox(height: 5.h),
@@ -312,14 +337,31 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
                                   ),
                                   Row(
                                     children: [
-                                      IconButton(onPressed: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => OfficerEditScreen(
-                                          officer: officer,
-                                        )));
-                                      }, icon: Icon(Icons.edit_rounded), color: mainColor,),
-                                      IconButton(onPressed: (){
-                                        buildWarningDeleteDialog(context, officer['id'], _uid!.toString(), timestamp).show();
-                                      }, icon: Icon(Icons.delete_rounded), color: red,),
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      OfficerEditScreen(
+                                                        officer: officer,
+                                                      )));
+                                        },
+                                        icon: Icon(Icons.edit_rounded),
+                                        color: mainColor,
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          buildWarningDeleteDialog(
+                                                  context,
+                                                  officer['id'],
+                                                  _uid!.toString(),
+                                                  timestamp)
+                                              .show();
+                                        },
+                                        icon: Icon(Icons.delete_rounded),
+                                        color: red,
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -343,7 +385,8 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
   }
 }
 
-AwesomeDialog buildWarningDeleteDialog(BuildContext context, String id, String uid, Timestamp timestamp) {
+AwesomeDialog buildWarningDeleteDialog(
+    BuildContext context, String id, String uid, Timestamp timestamp) {
   return AwesomeDialog(
     context: context,
     dialogType: DialogType.warning,
@@ -361,13 +404,13 @@ AwesomeDialog buildWarningDeleteDialog(BuildContext context, String id, String u
     btnOkText: 'Ya',
     btnCancelText: 'Tidak',
     btnOkOnPress: () {
-      try{
+      try {
         Officer.officerDelete(id);
         onDeleteOfficer(uid, timestamp);
-      }catch(e){
+      } catch (e) {
         print(e);
       }
     },
-    btnCancelOnPress: (){},
+    btnCancelOnPress: () {},
   );
 }
