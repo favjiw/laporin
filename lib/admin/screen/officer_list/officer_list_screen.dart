@@ -10,6 +10,7 @@ import 'package:laporin/admin/screen/menu/menu_widget.dart';
 import 'package:laporin/admin/screen/officer_list/officer_edit_screen.dart';
 import 'package:laporin/admin/service/officer.dart' as Officer;
 import 'package:laporin/history/history_detail_screen.dart';
+import 'package:laporin/services/trigger.dart';
 import 'package:laporin/shared/style.dart';
 import 'package:laporin/widget/boxshadow.dart';
 import 'package:shimmer/shimmer.dart';
@@ -76,6 +77,10 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Timestamp now = Timestamp.now();
+    DateTime dateTime = now.toDate();
+    final timestamp = Timestamp.fromDate(dateTime);
+
     return Scaffold(
       backgroundColor: accent,
       appBar: AppBar(
@@ -273,7 +278,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
                                         )));
                                       }, icon: Icon(Icons.edit_rounded), color: mainColor,),
                                       IconButton(onPressed: (){
-                                        buildWarningDeleteDialog(context, officer['id']).show();
+                                        // buildWarningDeleteDialog(context, officer['id'], _uid, timestamp).show();
                                       }, icon: Icon(Icons.delete_rounded), color: red,),
                                     ],
                                   ),
@@ -298,7 +303,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
   }
 }
 
-AwesomeDialog buildWarningDeleteDialog(BuildContext context, String id) {
+AwesomeDialog buildWarningDeleteDialog(BuildContext context, String id, String uid, Timestamp timestamp) {
   return AwesomeDialog(
     context: context,
     dialogType: DialogType.warning,
@@ -318,6 +323,7 @@ AwesomeDialog buildWarningDeleteDialog(BuildContext context, String id) {
     btnOkOnPress: () {
       try{
         Officer.officerDelete(id);
+        onDeleteOfficer(uid, timestamp);
       }catch(e){
         print(e);
       }

@@ -362,4 +362,42 @@ TextStyle titleBlackRespond = GoogleFonts.poppins(
   fontWeight: FontWeight.w500,
 );
 
+//profile admin
+TextStyle mainUsername = GoogleFonts.poppins(
+  fontSize: 16.sp,
+  color: Colors.black,
+  fontWeight: FontWeight.w600,
+);
+
+TextStyle mainRole = GoogleFonts.poppins(
+  fontSize: 14.sp,
+  color: mainColor,
+  fontWeight: FontWeight.w400,
+);
+
+TextStyle information = GoogleFonts.poppins(
+  fontSize: 14.sp,
+  color: black,
+  fontWeight: FontWeight.w500,
+);
+
+TextStyle profileSub = GoogleFonts.poppins(
+  fontSize: 14.sp,
+  color: grayUnselect,
+  fontWeight: FontWeight.w400,
+);
+
+TextStyle profileMain = GoogleFonts.poppins(
+  fontSize: 14.sp,
+  color: Colors.black,
+  fontWeight: FontWeight.w400,
+);
+
+TextStyle logoutWhite = GoogleFonts.poppins(
+  fontSize: 16.sp,
+  color: Colors.white,
+  fontWeight: FontWeight.w500,
+);
+
+
 
