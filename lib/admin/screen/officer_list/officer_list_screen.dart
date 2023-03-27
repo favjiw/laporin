@@ -10,9 +10,11 @@ import 'package:laporin/admin/screen/menu/menu_widget.dart';
 import 'package:laporin/admin/screen/officer_list/officer_edit_screen.dart';
 import 'package:laporin/admin/service/officer.dart' as Officer;
 import 'package:laporin/history/history_detail_screen.dart';
+import 'package:laporin/models/user.dart';
 import 'package:laporin/services/trigger.dart';
 import 'package:laporin/shared/style.dart';
 import 'package:laporin/widget/boxshadow.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:excel/excel.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,6 +32,43 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
   bool _isLoading = true;
   int _totalOfficers = 0;
   final db = FirebaseFirestore.instance;
+  String? _uid;
+
+  Future<String?> getSharedPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('uid');
+  }
+
+  currentUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      await getSharedPrefs().then((value) async {
+        print("Start");
+        print(value);
+        print(value.runtimeType);
+        setState(() {
+          _uid = '$value';
+        });
+      });
+    } catch (e) {
+      print('Error di blok getSharedPrefs: $e');
+    }
+    try {
+      var checkUsers =
+      await FirebaseFirestore.instance.collection('users').doc(_uid).get();
+      final users = Users.fromJson(checkUsers.data()!, purify: true);
+      setState(() {
+        _uid = users.id;
+      });
+    } catch (e) {
+      print('Error di blok firestore: $e');
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   Future countDocumentsInCollection() async {
     QuerySnapshot querySnapshot =
@@ -71,6 +110,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
 
   @override
   void initState() {
+    currentUser();
     countDocumentsInCollection();
     super.initState();
   }
@@ -278,7 +318,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
                                         )));
                                       }, icon: Icon(Icons.edit_rounded), color: mainColor,),
                                       IconButton(onPressed: (){
-                                        // buildWarningDeleteDialog(context, officer['id'], _uid, timestamp).show();
+                                        buildWarningDeleteDialog(context, officer['id'], _uid!.toString(), timestamp).show();
                                       }, icon: Icon(Icons.delete_rounded), color: red,),
                                     ],
                                   ),

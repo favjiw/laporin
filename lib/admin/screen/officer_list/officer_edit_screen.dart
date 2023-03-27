@@ -3,10 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:laporin/services/trigger.dart';
 import 'package:laporin/shared/style.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:laporin/widget/boxshadow.dart';
 import 'package:laporin/admin/service/officer.dart' as Officer;
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class OfficerEditScreen extends StatefulWidget {
@@ -26,7 +28,29 @@ class _OfficerEditScreenState extends State<OfficerEditScreen> {
   late TextEditingController _usernameController;
   late TextEditingController _nikController;
   late TextEditingController _phoneController;
+  bool? _isLoading;
+  String? _uid;
 
+  Future<String?> getSharedPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('uid');
+  }
+
+  Future getUid() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await getSharedPrefs().then((value){
+      setState(() {
+        _uid = '$value';
+      });
+    });
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   void setTextValue(){
     setState(() {
@@ -43,10 +67,15 @@ class _OfficerEditScreenState extends State<OfficerEditScreen> {
   void initState() {
     officer = widget.officer;
     setTextValue();
+    getUid();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
+    Timestamp now = Timestamp.now();
+    DateTime dateTime = now.toDate();
+    final timestamp = Timestamp.fromDate(dateTime);
+
     return Scaffold(
       backgroundColor: accent,
       appBar: AppBar(
@@ -412,6 +441,7 @@ class _OfficerEditScreenState extends State<OfficerEditScreen> {
                             if(_formKey.currentState!.validate()){
                               try{
                                 Officer.officerUpdate(_fullnameController.text, int.parse(_nikController.text), _phoneController.text.toString(), _usernameController.text, _emailController.text, _passwordController.text.toString(), officer['id'].toString());
+                                onUpdateOfficer(_uid!.toString(), timestamp);
                                 buildSuccessSubmitDialog(context).show();
                               }catch (e){
                                 print(e);
