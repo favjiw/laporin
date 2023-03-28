@@ -58,6 +58,7 @@ dependencies:
   fluttericon: ^2.0.0
   pdf: ^3.9.0
   pie_chart: ^5.3.2
+  lottie: ^2.3.0
 
 dev_dependencies:
   flutter_test:

@@ -7,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:laporin/history/history_detail_screen.dart';
 import 'package:laporin/shared/style.dart';
 import 'package:laporin/widget/boxshadow.dart';
+import 'package:lottie/lottie.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({Key? key}) : super(key: key);
@@ -94,7 +95,8 @@ class _HistoryScreenState extends State<HistoryScreen>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset('assets/null-history.png', width: 287.w, height: 272.h,),
+                        // Image.asset('assets/null-history.png', width: 287.w, height: 272.h,),
+                        Lottie.asset('assets/not-found-lottie.json', width: 287.w, height: 272.h, repeat: false),
                         SizedBox(
                             width: 227.w,
                             child: Text('Sepertinya kamu belum mengajukan pengaduan apapun', style: noData, textAlign: TextAlign.center,))
@@ -220,7 +222,8 @@ class _HistoryScreenState extends State<HistoryScreen>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset('assets/null-history.png', width: 287.w, height: 272.h,),
+                        // Image.asset('assets/null-history.png', width: 287.w, height: 272.h,),
+                        Lottie.asset('assets/not-found-lottie.json', width: 287.w, height: 272.h, repeat: false),
                         SizedBox(
                             width: 227.w,
                             child: Text('Sepertinya laporan kamu belum ada yang diproses', style: noData, textAlign: TextAlign.center,))
@@ -348,7 +351,8 @@ class _HistoryScreenState extends State<HistoryScreen>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset('assets/null-history.png', width: 287.w, height: 272.h,),
+                        // Image.asset('assets/null-history.png', width: 287.w, height: 272.h,),
+                        Lottie.asset('assets/not-found-lottie.json', width: 287.w, height: 272.h, repeat: false),
                         SizedBox(
                             width: 227.w,
                             child: Text('Mohon maaf, sepertinya laporan kamu belum ada yang selesai', style: noData, textAlign: TextAlign.center,))
