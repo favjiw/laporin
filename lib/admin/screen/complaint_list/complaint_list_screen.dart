@@ -97,7 +97,7 @@ class _ComplaintListScreenState extends State<ComplaintListScreen> {
                                 ),
                               ),
                               FadeInImage(
-                                placeholder: AssetImage('assets/loading.gif'),
+                                placeholder: AssetImage('assets/loading-spinner.gif'),
                                 image: NetworkImage(complaints['image']),
                                 width: 332.w,
                                 height: 113.h,

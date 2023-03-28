@@ -157,7 +157,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                                     ),
                                   ),
                                   FadeInImage(
-                                    placeholder: AssetImage('assets/loading-circle.gif'),
+                                    placeholder: AssetImage('assets/loading-spinner.gif'),
                                     image: NetworkImage(complaints['image']),
                                     width: 332.w,
                                     height: 113.h,
@@ -284,7 +284,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                                     ),
                                   ),
                                   FadeInImage(
-                                    placeholder: AssetImage('assets/loading-circle.gif'),
+                                    placeholder: AssetImage('assets/loading-spinner.gif'),
                                     image: NetworkImage(complaints['image']),
                                     width: 332.w,
                                     height: 113.h,
@@ -412,7 +412,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                                     ),
                                   ),
                                   FadeInImage(
-                                    placeholder: AssetImage('assets/loading-circle.gif'),
+                                    placeholder: AssetImage('assets/loading-spinner.gif'),
                                     image: NetworkImage(complaints['image']),
                                     width: 332.w,
                                     height: 113.h,
