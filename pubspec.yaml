@@ -57,6 +57,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^20.4.54
   fluttericon: ^2.0.0
   pdf: ^3.9.0
+  pie_chart: ^5.3.2
 
 dev_dependencies:
   flutter_test:

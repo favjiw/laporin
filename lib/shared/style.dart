@@ -399,5 +399,42 @@ TextStyle logoutWhite = GoogleFonts.poppins(
   fontWeight: FontWeight.w500,
 );
 
+//dashboard admin
+TextStyle welcome = GoogleFonts.poppins(
+  fontSize: 16.sp,
+  color: grayUnselect,
+  fontWeight: FontWeight.w400,
+);
+
+TextStyle username = GoogleFonts.poppins(
+  fontSize: 16.sp,
+  color: Colors.black,
+  fontWeight: FontWeight.w500,
+);
+
+TextStyle chartLegend = GoogleFonts.poppins(
+  fontSize: 14.sp,
+  color: Colors.black,
+  fontWeight: FontWeight.w400,
+);
+
+TextStyle totalUser = GoogleFonts.poppins(
+  fontSize: 12.sp,
+  color: mainColor,
+  fontWeight: FontWeight.w500,
+);
+
+TextStyle masyarakatDashboard = GoogleFonts.poppins(
+  fontSize: 12.sp,
+  color: grayB6,
+  fontWeight: FontWeight.w500,
+);
+
+TextStyle totalDashboard = GoogleFonts.poppins(
+  fontSize: 20.sp,
+  color: secondaryColor,
+  fontWeight: FontWeight.w600,
+);
+
 
 

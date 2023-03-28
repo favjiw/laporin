@@ -32,7 +32,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
   int _totalOfficers = 0;
   final db = FirebaseFirestore.instance;
   String? _uid;
-  String? _role;
+  String _role = '';
 
   Future<String?> getSharedPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -58,7 +58,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
       final users = Users.fromJson(checkUsers.data()!, purify: true);
       setState(() {
         _uid = users.id;
-        _role = users.role;
+        _role = users.role!;
       });
     } catch (e) {
       print('Error di blok firestore: $e');
@@ -185,7 +185,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
                         ),
                   _isLoading!
                       ? SizedBox()
-                      : _role! != "admin"
+                      : _role != "admin"
                           ? SizedBox()
                           : TextButton(
                               onPressed: () {
