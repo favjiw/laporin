@@ -436,5 +436,11 @@ TextStyle totalDashboard = GoogleFonts.poppins(
   fontWeight: FontWeight.w600,
 );
 
+//no data
+TextStyle noData = GoogleFonts.poppins(
+  fontSize: 12.sp,
+  color: grayB6,
+  fontWeight: FontWeight.w400,
+);
 
 

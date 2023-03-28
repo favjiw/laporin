@@ -1,11 +1,13 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:laporin/services/auth.dart';
 import 'package:laporin/shared/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
+
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
@@ -21,6 +23,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nikController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  bool? _isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -84,10 +87,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         TextFormField(
                           controller: _nikController,
                           style: inputLogin,
+                          maxLength: 16,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'NIK required';
-                            }else if(value.length != 16){
+                            } else if (value.length != 16) {
                               return 'NIK perlu 16 digit';
                             }
                             return null;
@@ -101,11 +105,10 @@ class _SignupScreenState extends State<SignupScreen> {
                               width: 20.w,
                               height: 20.h,
                             ),
-                            // prefixIcon: Icon(Icons.alternate_email_rounded, color: grayUnselect,),
                           ),
                         ),
                         SizedBox(
-                          height: 21.h,
+                          height: 5.h,
                         ),
                         TextFormField(
                           controller: _phoneController,
@@ -125,7 +128,6 @@ class _SignupScreenState extends State<SignupScreen> {
                               width: 20.w,
                               height: 20.h,
                             ),
-                            // prefixIcon: Icon(Icons.alternate_email_rounded, color: grayUnselect,),
                           ),
                         ),
                         SizedBox(
@@ -148,7 +150,6 @@ class _SignupScreenState extends State<SignupScreen> {
                               width: 20.w,
                               height: 20.h,
                             ),
-                            // prefixIcon: Icon(Icons.alternate_email_rounded, color: grayUnselect,),
                           ),
                         ),
                         SizedBox(
@@ -158,16 +159,14 @@ class _SignupScreenState extends State<SignupScreen> {
                           controller: _emailController,
                           style: inputLogin,
                           keyboardType: TextInputType.emailAddress,
-                          // autovalidateMode: AutovalidateMode.onUserInteraction,
-                          // validator: (email) =>
-                          //     email != null
-                          //         ? 'Enter a valid email'
-                          //         : null,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Email required';
+                              return 'Email Required';
+                            }else if(!EmailValidator.validate(value)){
+                              return 'Please enter correct email';
+                            }else{
+                              return null;
                             }
-                            return null;
                           },
                           decoration: InputDecoration(
                             hintText: "Email",
@@ -177,7 +176,6 @@ class _SignupScreenState extends State<SignupScreen> {
                               width: 20.w,
                               height: 20.h,
                             ),
-                            // prefixIcon: Icon(Icons.alternate_email_rounded, color: grayUnselect,),
                           ),
                         ),
                         SizedBox(
@@ -187,14 +185,14 @@ class _SignupScreenState extends State<SignupScreen> {
                           controller: _passwordController,
                           style: inputLogin,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          // validator: (value) => value != null && value.length >= 8
-                          //     ? 'Enter min. 8 characters'
-                          //     : null,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Password required';
+                            }else if(value.length < 8){
+                              return 'Password too short';
+                            }else{
+                              return null;
                             }
-                            return null;
                           },
                           decoration: InputDecoration(
                             hintText: "Password",
@@ -260,33 +258,96 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
   }
+
   Future signUp() async {
-    if(_formKey.currentState!.validate()){
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => Center(child: CircularProgressIndicator()),
-      );
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      _showLoadingIndicator(context);
       try {
-        await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-            email: _emailController.text,
-            password: _passwordController.text);
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
         Navigator.of(context).pushNamedAndRemoveUntil(
-            '/botnavbar',
-                (Route<dynamic> route) => false);
+            '/botnavbar', (Route<dynamic> route) => false);
         userSetup(
             _fullnameController.text,
             int.parse(_nikController.text),
             _phoneController.text,
             _usernameController.text,
             _emailController.text);
+        buildSnackBarSuccess(context, 'success register');
       } on FirebaseAuthException catch (e) {
+        if (e.code == 'email-already-in-use') {
+          buildSnackBarError(context, 'Email already in use');
+        }
         print(e);
-        _emailController.text = "";
-        _passwordController.text = "";
       }
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).maybePop();
     }
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
+}
+
+void _showLoadingIndicator(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Container(
+          height: 64.h,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+void buildSnackBarSuccess(BuildContext context, String title) {
+  final snackBar = SnackBar(
+    content: Text(
+      title,
+      style: snackBarTitle,
+    ),
+    backgroundColor: mainColor,
+    behavior: SnackBarBehavior.floating,
+    margin: EdgeInsets.all(20),
+    elevation: 30,
+    action: SnackBarAction(
+      label: 'Dismiss',
+      disabledTextColor: Colors.white,
+      textColor: Colors.yellow,
+      onPressed: () {
+        //Do whatever you want
+      },
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+void buildSnackBarError(BuildContext context, String title) {
+  final snackBar = SnackBar(
+    content: Text(
+      title,
+      style: snackBarTitle,
+    ),
+    backgroundColor: HexColor('#FF6C6C'),
+    behavior: SnackBarBehavior.floating,
+    margin: EdgeInsets.all(20),
+    elevation: 30,
+    action: SnackBarAction(
+      label: 'Dismiss',
+      disabledTextColor: Colors.white,
+      textColor: Colors.yellow,
+      onPressed: () {
+        //Do whatever you want
+      },
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

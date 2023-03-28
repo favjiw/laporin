@@ -90,15 +90,15 @@ class _HistoryScreenState extends State<HistoryScreen>
                 stream: db.collection('complaints').where('status', isEqualTo: 0).where('idUser', isEqualTo: uid).snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.image_not_supported, size: 50),
-                          SizedBox(height: 10),
-                          Text('No data available')
-                        ],
-                      ),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/null-history.png', width: 287.w, height: 272.h,),
+                        SizedBox(
+                            width: 227.w,
+                            child: Text('Sepertinya kamu belum mengajukan pengaduan apapun', style: noData, textAlign: TextAlign.center,))
+                      ],
                     );
                   } else {
                     return ListView(
@@ -157,7 +157,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                                     ),
                                   ),
                                   FadeInImage(
-                                    placeholder: AssetImage('assets/woman-img.png'),
+                                    placeholder: AssetImage('assets/loading-circle.gif'),
                                     image: NetworkImage(complaints['image']),
                                     width: 332.w,
                                     height: 113.h,
@@ -216,15 +216,15 @@ class _HistoryScreenState extends State<HistoryScreen>
                 stream: db.collection('complaints').where('status', isEqualTo: 1).where('idUser', isEqualTo: uid).snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.image_not_supported, size: 50),
-                          SizedBox(height: 10),
-                          Text('No data available')
-                        ],
-                      ),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/null-history.png', width: 287.w, height: 272.h,),
+                        SizedBox(
+                            width: 227.w,
+                            child: Text('Sepertinya laporan kamu belum ada yang diproses', style: noData, textAlign: TextAlign.center,))
+                      ],
                     );
                   } else {
                     return ListView(
@@ -277,18 +277,15 @@ class _HistoryScreenState extends State<HistoryScreen>
                                             }
                                           }),
                                         ),
-                                        // Text(
-                                        //   "Diajukan",
-                                        //   style: itemStatusRed,
-                                        // ),
                                         SizedBox(
                                           height: 4.h,
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Image.network(
-                                    complaints['image'],
+                                  FadeInImage(
+                                    placeholder: AssetImage('assets/loading-circle.gif'),
+                                    image: NetworkImage(complaints['image']),
                                     width: 332.w,
                                     height: 113.h,
                                     fit: BoxFit.cover,
@@ -347,15 +344,15 @@ class _HistoryScreenState extends State<HistoryScreen>
                 stream: db.collection('complaints').where('status', isEqualTo: 2).where('idUser', isEqualTo: uid).snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.image_not_supported, size: 50),
-                          SizedBox(height: 10),
-                          Text('No data available')
-                        ],
-                      ),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/null-history.png', width: 287.w, height: 272.h,),
+                        SizedBox(
+                            width: 227.w,
+                            child: Text('Mohon maaf, sepertinya laporan kamu belum ada yang selesai', style: noData, textAlign: TextAlign.center,))
+                      ],
                     );
                   } else {
                     return ListView(
@@ -408,18 +405,15 @@ class _HistoryScreenState extends State<HistoryScreen>
                                             }
                                           }),
                                         ),
-                                        // Text(
-                                        //   "Diajukan",
-                                        //   style: itemStatusRed,
-                                        // ),
                                         SizedBox(
                                           height: 4.h,
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Image.network(
-                                    complaints['image'],
+                                  FadeInImage(
+                                    placeholder: AssetImage('assets/loading-circle.gif'),
+                                    image: NetworkImage(complaints['image']),
                                     width: 332.w,
                                     height: 113.h,
                                     fit: BoxFit.cover,

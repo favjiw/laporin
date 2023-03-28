@@ -10,6 +10,7 @@ import 'package:laporin/services/auth.dart';
 import 'package:laporin/shared/style.dart';
 import 'package:laporin/widget/botnavbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:email_validator/email_validator.dart';
 
 import '../models/user.dart';
 
@@ -81,8 +82,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Email Required';
+                              }else if(!EmailValidator.validate(value)){
+                                return 'Please enter correct email';
+                              }else{
+                                return null;
                               }
-                              return null;
                             },
                             decoration: InputDecoration(
                               hintText: "Email",
@@ -127,7 +131,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 width: 20.w,
                                 height: 20.h,
                               ),
-                              // prefixIcon: Icon(Icons.alternate_email_rounded, color: grayUnselect,),
                             ),
                           ),
                           SizedBox(

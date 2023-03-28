@@ -56,9 +56,7 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
           )
           : IconButton(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Pengaduan telah diproses, tidak bisa diubah."),)
-              );
+              buildSnackBarError(context, "Pengaduan telah diproses, tidak dapat diubah.");
             },
             icon: Icon(
               Icons.edit,
@@ -171,18 +169,20 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
                 Text("Tanggapan:", style: itemTitleDetail,),
                 SizedBox(height: 12.h,),
                 StreamBuilder<QuerySnapshot>(
-                  stream: db.collection('complaints/'+ complaint['id'] + '/respond').snapshots(),
+                  stream: db.collection('complaints/'+ complaint['id'] + '/respond').orderBy('date', descending: false).snapshots(),
                   builder: (context, snapshot){
                     if(!snapshot.hasData || snapshot.data!.docs.isEmpty){
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.image_not_supported, size: 50),
-                            SizedBox(height: 10),
-                            Text('No data available')
-                          ],
-                        ),
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(child: Image.asset('assets/null-history-detail.png', width: 171.w, height: 116.h,)),
+                          Center(
+                            child: SizedBox(
+                                width: 241.w,
+                                child: Text('Mohon maaf, sepertinya pengaduanmu belum ditanggapi.', style: noData, textAlign: TextAlign.center,)),
+                          )
+                        ],
                       );
                     }
                    else{
@@ -269,4 +269,23 @@ AwesomeDialog buildWarningDeleteDialog(BuildContext context, String id) {
     },
     btnCancelOnPress: (){},
   );
+}
+
+void buildSnackBarError(BuildContext context, String title) {
+  final snackBar = SnackBar(
+    content: Text(title, style: snackBarTitle,),
+    backgroundColor: HexColor('#FF6C6C'),
+    behavior: SnackBarBehavior.floating,
+    margin: EdgeInsets.all(20),
+    elevation: 30,
+    action: SnackBarAction(
+      label: 'Dismiss',
+      disabledTextColor: Colors.white,
+      textColor: Colors.yellow,
+      onPressed: () {
+        //Do whatever you want
+      },
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

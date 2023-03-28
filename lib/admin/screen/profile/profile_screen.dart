@@ -89,7 +89,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
         children: [
           SizedBox(
             width: 360.w,
-            height: 130.h,
+            height: 145.h,
             child: Stack(
               children: [
                 Positioned(
