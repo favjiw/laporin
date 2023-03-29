@@ -1,6 +1,6 @@
 # laporin
 
-A new Flutter project.
+Laporin adalah aplikasi pengaduan masyarakat berbasis mobile. 
 
 ## Getting Started
 
