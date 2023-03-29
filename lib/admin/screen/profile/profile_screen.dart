@@ -18,13 +18,13 @@ class ProfileAdminScreen extends StatefulWidget {
 
 class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
   bool? _isLoading;
-  String? _uid;
-  String? _fullname;
-  String? _username;
-  int? _nik;
-  String? _email;
-  String? _phone;
-  String? _role;
+  String _uid = '';
+  String _fullname = '';
+  String _username = '';
+  int _nik = 0;
+  String _email = '';
+  String _phone = '';
+  String _role = '';
 
   @override
   void initState() {
@@ -55,12 +55,12 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
           await FirebaseFirestore.instance.collection('users').doc(_uid).get();
       final users = Users.fromJson(checkUsers.data()!, purify: true);
       setState(() {
-        _fullname = users.fullname;
-        _username = users.username;
-        _nik = users.nik;
-        _email = users.email;
-        _phone = users.phone;
-        _role = users.role;
+        _fullname = users.fullname!;
+        _username = users.username!;
+        _nik = users.nik!;
+        _email = users.email!;
+        _phone = users.phone!;
+        _role = users.role!;
       });
     } catch (e) {
       print('Error di blok firestore: $e');
@@ -143,7 +143,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                 ),
               )
                   : Text(
-                _fullname!,
+                _fullname,
                 style: profileMain,
               ),
           ),
@@ -162,7 +162,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                 ),
               )
                   : Text(
-                _role!,
+                _role,
                 style: profileMain,
               ),),
           SizedBox(
@@ -212,7 +212,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                             ),
                           )
                         : Text(
-                            _fullname!,
+                            _fullname,
                             style: profileMain,
                           ),
                   ],
@@ -252,7 +252,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                       ),
                     )
                         : Text(
-                      _username!,
+                      _username,
                       style: profileMain,
                     ),
                   ],
@@ -292,7 +292,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                       ),
                     )
                         : Text(
-                      _email!,
+                      _email,
                       style: profileMain,
                     ),
                   ],
@@ -332,7 +332,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                       ),
                     )
                         : Text(
-                      _nik!.toString(),
+                      _nik.toString(),
                       style: profileMain,
                     ),
                   ],
@@ -372,7 +372,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                       ),
                     )
                         : Text(
-                      _phone!,
+                      _phone,
                       style: profileMain,
                     ),
                   ],
