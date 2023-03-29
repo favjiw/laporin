@@ -12,6 +12,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
+import 'package:open_filex/open_filex.dart';
 
 class ComplaintDetailScreen extends StatefulWidget {
   final dynamic complaint;
@@ -408,6 +409,7 @@ class _ComplaintDetailScreenState extends State<ComplaintDetailScreen> {
       );
       await file.writeAsBytes(await pdf.save());
       print("Berhasil : $_filePath");
+      // OpenFilex.open(_filePath);
       setState(() {
         _filePath = file.path;
       });

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,10 +63,6 @@ class _ComplaintEditScreenState extends State<ComplaintEditScreen> {
   Widget build(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
     String uid = auth.currentUser!.uid.toString();
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    CollectionReference complaints = firestore.collection('complaints');
-    final db = FirebaseFirestore.instance.collection('complaints');
-    final ref = db.doc();
 
     return GestureDetector(
       onTap: () {
@@ -431,6 +428,7 @@ class _ComplaintEditScreenState extends State<ComplaintEditScreen> {
                           try{
                             complaintUpdate(complaint['id'], _titleController.text, _complaintDate!,
                                 _descController.text, imageUrl, 0, uid);
+                            print(_titleController.text);
                             _titleController.text = "";
                             _dateController.text = "";
                             _descController.text = "";

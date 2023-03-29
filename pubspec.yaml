@@ -59,15 +59,35 @@ dependencies:
   pdf: ^3.9.0
   pie_chart: ^5.3.2
   lottie: ^2.3.0
+  flutter_launcher_icons: ^0.12.0
+  open_filex: ^4.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_launcher_icons: "^0.12.0"
   flutter_lints: ^2.0.0
   build_runner: ^2.3.3
   cloud_firestore_odm_generator: ^1.0.0-dev.45
   json_serializable: ^6.6.1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/laporin-logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/laporin-logo.png"
+    background_color: "#F3FCFB"
+    theme_color: "#F3FCFB"
+  windows:
+    generate: true
+    image_path: "assets/laporin-logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/laporin-logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

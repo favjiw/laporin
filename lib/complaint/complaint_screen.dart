@@ -378,6 +378,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                       _dateController.text = "";
                       _descController.text = "";
                       _isImageUploaded = false;
+                      print(_titleController.text);
                       buildSuccessSubmitDialog(context).show();
                     } catch (e) {
                       print(e);
