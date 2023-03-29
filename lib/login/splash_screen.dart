@@ -51,15 +51,19 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> userCheck() async {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
-        setState(() {
+        if(mounted) {
+          setState(() {
           isUser = true;
         });
+        }
         print(user.uid);
         print("is User: $isUser");
       } else {
-        setState(() {
+        if(mounted) {
+          setState(() {
           isUser = false;
         });
+        }
         print("is User: $isUser");
       }
     });

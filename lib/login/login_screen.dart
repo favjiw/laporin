@@ -269,7 +269,9 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = false;
     });
-    Navigator.of(context).maybePop();
+    Future.delayed(Duration.zero, (){
+      Navigator.of(context).maybePop();
+    });
   }
 }
 

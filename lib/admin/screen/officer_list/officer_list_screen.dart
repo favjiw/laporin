@@ -95,7 +95,6 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
           .get();
       var workbook = Excel.createExcel();
       var sheet = workbook['Sheet1'];
-      // Add headers to worksheet
       sheet.appendRow([
         'ID',
         'Fullname',
@@ -106,7 +105,6 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
         'Email',
         'Password'
       ]);
-      // Add data to worksheet
       for (var document in querySnapshot.docs) {
         dynamic documentData = document.data();
         var row = [

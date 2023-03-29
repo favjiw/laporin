@@ -330,6 +330,12 @@ TextStyle officerAdd = GoogleFonts.poppins(
   fontWeight: FontWeight.w600,
 );
 
+TextStyle officerLog = GoogleFonts.poppins(
+  fontSize: 12.sp,
+  color: secondaryColor,
+  fontWeight: FontWeight.w500,
+);
+
 //complaint Detail
 TextStyle subtitleComplaint = GoogleFonts.poppins(
   fontSize: 12.sp,
