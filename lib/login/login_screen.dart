@@ -5,14 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:laporin/admin/screen/panel/panel_screen.dart';
-import 'package:laporin/services/auth.dart';
 import 'package:laporin/shared/style.dart';
-import 'package:laporin/widget/botnavbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:email_validator/email_validator.dart';
-
-import '../models/user.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -218,8 +213,10 @@ class _LoginScreenState extends State<LoginScreen> {
           password: password,
         );
         //do something with logged user
-        Navigator.pushNamedAndRemoveUntil(
+        if (context.mounted) {
+          Navigator.pushNamedAndRemoveUntil(
             context, '/botnavbar', (route) => false);
+        }
         buildSnackBarSuccess(context, "Login Success");
         print('user logged in');
       } on FirebaseAuthException catch (e) {
