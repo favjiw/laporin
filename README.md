@@ -1,16 +1,48 @@
-# laporin
+# Laporin - Community Complaint Application
 
-Laporin adalah aplikasi pengaduan masyarakat berbasis mobile. 
+**Laporin** is a mobile-based community complaint application that allows users to report incidents or issues occurring around them. The app facilitates communication between the public and authorities, ensuring problems are addressed swiftly and efficiently.
 
-## Getting Started
+## 🌟 Features
 
-This project is a starting point for a Flutter application.
+- 📝 **Submit Reports**: Users can submit reports directly from the app, including details of the issue, location, and supporting evidence like photos or videos.
+- 📍 **Location-Based Reporting**: Reports can be enhanced with geolocation data to indicate the exact location of the incident.
+- 🔔 **Real-Time Notifications**: Users receive notifications when their report is being processed or when there is a status update.
+- 📊 **Track Report History**: Users can track the status of their reports and view the history of submitted reports.
+- 🤝 **User Interaction**: Community members can engage with reports by upvoting or commenting to add more information.
 
-A few resources to get you started if this is your first Flutter project:
+## 🚀 Technologies Used
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Flutter**: For cross-platform mobile app development.
+- **Firebase**: Used for real-time database and notifications.
+- **Google Maps API**: For geolocation services and map integration.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🖥️ Getting Started
+
+Follow these steps to set up the project locally:
+
+### Prerequisites
+
+- [Flutter SDK](https://flutter.dev/docs/get-started/install)
+- Firebase configuration for real-time database and notifications.
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/laporin.git
+
+2. Navigate to the project directory:
+
+    ```bash
+    cd laporin
+    
+4. Install the necessary dependencies:
+
+    ```bash
+   flutter pub get
+  
+6. Run the app:
+
+    ```bash
+   flutter run
